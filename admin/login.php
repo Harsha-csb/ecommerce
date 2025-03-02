@@ -14,7 +14,7 @@ if (isset($_POST['login'])) {
     if ($user && password_verify($password, $user['password'])) {
         // Start admin session and redirect to dashboard
         $_SESSION['admin_id'] = $user['id'];
-        header("Location: ../dashboard.php");
+        header("Location: dashboard.php");
         exit();
     } else {
         echo "<p style='color:red; text-align:center;'>Invalid credentials or not an admin.</p>";
