@@ -1,3 +1,6 @@
+
+
+
 <?php
 session_start();
 include 'includes/db.php'; // Include the database connection
@@ -6,6 +9,7 @@ if (isset($_POST['logout'])) {
     session_destroy();
     header("Location: pages/login.php");
     exit();
+    
 }
 
 // Fetch products from the database
@@ -18,56 +22,40 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
     <style>
-        body {
-    font-family: 'Arial', sans-serif;
+       body {
+    font-family: 'Playfair Display', serif;
     margin: 0;
     padding: 0;
-    background-color: #f7f7f7;
-    color: #333;
+    background-color:rgb(255, 255, 255);
+    color: #e0e0e0;
 }
 
 /* Header */
 header {
-    background-color:rgb(54, 96, 173);
-    color: white;
-    padding: 20px;
+    background-color: #181818;
+    padding: 30px;
     text-align: center;
-    position: relative;
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    width: 100%; /* Ensures full width */
 }
 
 header h1 {
     margin: 0;
-    font-size: 2em;
+    font-size: 3rem;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 2px;
+    
 }
 
-/* Updated navigation styling to align buttons in one row */
+/* Navigation */
 nav {
     display: flex;
-    align-items: center; /* Align buttons vertically centered */
+    justify-content: flex-end; /* Align to the left */
+    gap: 30px;
+    margin-top: 20px;
 }
+
 
 nav a, .logout-button {
-    color: white;
-    text-decoration: none;
-    margin: 0 15px;
-    font-size: 1em;
-    text-transform: uppercase;
-    display: inline-block;
-}
-
-nav a:hover, .logout-button:hover {
-    text-decoration: underline;
-}
-
-.logout-button {
     background-color: #ff5733;
     color: white;
     border: none;
@@ -77,32 +65,29 @@ nav a:hover, .logout-button:hover {
     transition: background-color 0.3s;
 }
 
-.logout-button:hover {
-    background-color: #e84e2f;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Allows responsiveness */
+nav a:hover, .logout-button:hover {
+    border-color: #fff;
 }
 
-/* Product Listing */
+/* Product List */
+.main-container {
+    padding: 50px;
+    max-width: 1200px;
+    margin: auto;
+}
+
 .product-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
-    width: 80%; /* Take up most of the screen */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
 }
 
 .product {
-    background-color: #fff;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    background-color: #1f1f1f;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
-    width: 23%; /* Set width for 4 products per row */
-    transition: transform 0.3s ease-in-out;
-    margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
 .product:hover {
@@ -110,56 +95,62 @@ nav a:hover, .logout-button:hover {
 }
 
 .product h3 {
+    font-size: 1.5rem;
     margin-bottom: 10px;
-    font-size: 1.3em;
-    color: #333;
+    color: #fff;
 }
 
 .product p {
-    font-size: 1em;
-    color: #777;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #bbb;
 }
 
 .product-image {
     width: 100%;
-    height: 150px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 8px;
-    margin: 10px 0;
+    margin: 20px 0;
+    border-radius: 10px;
 }
 
-
-
+/* Button */
 .add-to-cart-button {
-    background-color: #2ecc71;
-    color: white;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 6px;
-    font-size: 1.2em;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: all 0.3s;
 }
 
 .add-to-cart-button:hover {
-    background-color: #27ae60;
-    transform: scale(1.05);
+    background-color: #fff;
+    color: #000;
 }
 
 /* Footer */
 footer {
-    background-color:rgb(77, 137, 198);
-    color: white;
+    background-color: #181818;
+    padding: 30px 0;
+    color: #aaa;
     text-align: center;
-    padding: 20px 0;
-    margin-top: 10px;
+}
+.order-history-button {
+    background-color: #3498db; /* Blue color */
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-left: 10px;
 }
 
-footer p {
-    margin: 0;
-    font-size: 1.1em;
+.order-history-button:hover {
+    background-color: #217dbb;
 }
+
         </style>
        
     <meta charset="UTF-8">
@@ -169,30 +160,51 @@ footer p {
 </head>
 <body>
     <header>
+        
         <div class="header-container">
             <h1 style="color:white; front-style:italic;">Welcome to HR STORES</h1>
             <nav>
-                <a href="pages/login.php">Login</a>
-                <a href="pages/register.php">Register</a>
-                <a href="pages/cart.php" class="cart-link">
-                    <img src="images/demo.png" alt="Cart" class="cart-icon" height="25px">
-                    Cart
-                </a>
-                <form method="POST" style="display: inline;">
-    <button type="submit" name="logout" class="logout-button">Logout</button>
-</form>
-            </nav>
+
+<?php if (!isset($_SESSION['user_id'])): ?>
+    <a href="pages/login.php">Login</a>
+    <a href="pages/register.php">Register</a>
+<?php else: 
+    $stmt = $conn->prepare("SELECT email FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+?>
+    <div class="user-info">
+        <span><?= htmlspecialchars($user['email']); ?></span>
+    </div>
+    <form method="POST" style="display: inline;">
+        <button type="submit" name="logout" class="logout-button">Logout</button>
+    </form>
+<?php endif; ?>
+
+<a href="pages/cart.php" class="cart-link">
+    <img src="images/demo.png" alt="Cart" class="cart-icon" height="25px">
+    Cart
+</a>
+
+<?php if (isset($_SESSION['user_id'])): ?>
+    <a href="pages/orders_history.php">Order History</a>
+<?php endif; ?>
+
+</nav>
+
+
         </div>
     </header>
     <div class="main-container">
         <main>
-            <h2>Products</h2>
+            <h2 style="color:black";> Products</h2>
             <div class="product-list">
             <?php if (empty($products)) : ?>
     <p>No products available.</p>
 <?php else : ?>
     <?php foreach ($products as $product) : ?>
         <div class="product">
+            
             <h3><?= htmlspecialchars($product['name']); ?></h3>
             <p>Price: $<?= number_format($product['price'], 2); ?></p>
             <p><?= htmlspecialchars($product['description']); ?></p>
@@ -211,6 +223,7 @@ footer p {
     </div>
     <footer>
         <p>&copy; <?= date('Y'); ?> Online Store. All rights reserved.</p>
+        <p>created by HARSHA</p>
     </footer>
 </body>
 </html>

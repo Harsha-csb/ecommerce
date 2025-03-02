@@ -52,7 +52,7 @@ $total_cost = 0;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Your Cart</title>
 <style>
-    body { font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
+    body { font-family: Arial, sans-serif; background-color:rgb(48, 49, 50); margin: 0; padding: 0; color: #333; }
     .container { width: 90%; max-width: 1200px; margin: 40px auto; background-color: #fff; padding: 20px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); border-radius: 8px; }
     h2 { text-align: center; font-size: 2em; margin-bottom: 20px; }
     .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; margin-bottom: 15px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); }
